@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+
+// Usar aplicação como json
+app.use(express.json())
+
 const porta = process.env.PORTA;
 
 const alunos = [];
@@ -43,19 +47,22 @@ app.post("/cadastrar", (requisicao, resposta) => {
   try {
     // corpo da requisição com os dados que preciso
     const { matricula, nome, email } = requisicao.body
+    
+    // salvando os dados que enviei ao servidor pela req
+    const dados = { matricula, nome, email }
+    
     // Vericando se todos os campos foram preenchidos, caso não retorna erro 400
     if(!matricula || !nome || !email){
       return resposta.status(400).json({mensagem:"Todos os campos são obrigatorios!"})
     }
-    // salvando os dados que enviei ao servidor pela req
-    const dados = { matricula, nome, email }
+    
     // Salvando os dados em array(memoria) via push
-    const aluno = alunos.push(dados)
+    alunos.push(dados)
 
     // resposta informando que o aluno foi cadastrado
-    resposta.status(201).json({mensagem: "Cadastro realizado com sucesso!" , aluno: aluno})
+    resposta.status(201).json({mensagem: "Cadastro realizado com sucesso!"})
   } catch (error) {
-    resposta.status(500).json({mensagem: "Erro ao cadastrar usuario!"})
+    resposta.status(500).json({mensagem: "Erro ao cadastrar usuario!", erro: error})
   }
 })
 
