@@ -67,7 +67,6 @@ app.post("/cadastrar", (requisicao, resposta) => {
 })
 
 
-
 app.listen(porta, () => {
   console.log(`O servidor está em execução!`);
 });
