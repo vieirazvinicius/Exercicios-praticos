@@ -101,8 +101,49 @@ app.put("/editar/:matricula", (requisicao, resposta) => {
   }
 });
 
+app.patch("/editar/:matricula", (requisicao, resposta) =>  {
+  try {
+    const matricula = requisicao.params.matricula
+    const aluno = alunos.find(aluno => aluno.matricula === matricula)
+    if(!aluno){
+      return resposta.status(400).json({mensagem: "Aluno não encontrado!"})
+    }
+    const { novoNome, novoEmail } = requisicao.body
+    
+    aluno.nome = novoNome || aluno.nome
+    
+    aluno.email = novoEmail || aluno.email
 
+    resposta.status(200).json({mensagem: "Aluno atualizado com sucesso!"})
+  } catch (error) {
+    resposta.status(500).json({mensagem: "Erro ao editar o aluno!", erro: error})
+  }
+})
+
+app.delete("/excluir/todos", (requisicao, resposta) => {
+  try {
+    alunos.length = 0
+    resposta.status(200).json({mensagem: "Todos os alunos foram excluidos!"})
+  } catch (error) {
+    resposta.status(500).json({mensagem: "Erro ao excluir os alunos!", erro: error})
+  }
+} )
+
+app.delete("/excluir/:matricula", (requisicao, resposta) => {
+  try {
+    const matricula = requisicao.params.matricula
+    const alunoIndex = alunos.findIndex(aluno => aluno.matricula === matricula)
+    if(alunoIndex === -1){
+      return resposta.status(400).json({mensagem: "Aluno não encontrado!"})
+    }
+    alunos.splice(alunoIndex,1)
+    resposta.status(200).json({mensagem: "Aluno excluido com sucesso!"})
+  } catch (error) {
+    resposta.status(500).json({mensagem: "Erro ao excluir os alunos!", erro: error})
+  }
+})
 
 app.listen(porta, () => {
   console.log(`O servidor está em execução!`);
 });
+
