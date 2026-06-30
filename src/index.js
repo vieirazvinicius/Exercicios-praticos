@@ -10,43 +10,43 @@ app.use(express.json());
 
 const porta = process.env.PORTA;
 
-const alunos = [];
+const veiculos = [];
 
 app.get("/listar", (requisicao, resposta) => {
   try {
-    if (alunos.length === 0) {
+    if (veiculos.length === 0) {
       return resposta
         .status(200)
-        .json({ mensagem: "Nenhum aluno cadastrado!" });
+        .json({ mensagem: "Nenhum veículo cadastrado!" });
     }
-    resposta.status(200).json(alunos);
+    resposta.status(200).json(veiculos);
   } catch (error) {
     resposta
       .status(500)
-      .json({ mensagem: "Erro ao listar os alunos", erro: error });
+      .json({ mensagem: "Erro ao listar os veículos", erro: error });
   }
 });
 
 // Endpoint para listar aluno pelo matricula
 // http://localhost:3000/listar/a92222
-app.get("/listar/:matricula", (requisicao, resposta) => {
+app.get("/listar/:placa", (requisicao, resposta) => {
   try {
-    const matricula = requisicao.params.matricula;
+    const placa = requisicao.params.placa;
     // const alunos = [{},{},{}]
-    const aluno_procurado = alunos.find(
-      (aluno) => aluno.matricula === matricula,
+    const veiculo_procurado = veiculos.find(
+      (veiculo) => veiculo.placa === placa,
     );
 
     // e se o aluno que eu estou procurando não existir?
-    if (!aluno_procurado) {
-      return resposta.status(200).json({ mensagem: "Aluno não encontrado!" });
+    if (!veiculo_procurado) {
+      return resposta.status(200).json({ mensagem: "Veículo não encontrado!" });
     }
 
-    resposta.status(200).json(aluno_procurado);
+    resposta.status(200).json(veiculo_procurado);
   } catch (error) {
     resposta
       .status(500)
-      .json({ mensagem: "Erro ao listar o aluno", erro: error });
+      .json({ mensagem: "Erro ao listar o veículo", erro: error });
   }
 });
 
@@ -54,20 +54,21 @@ app.get("/listar/:matricula", (requisicao, resposta) => {
 app.post("/cadastrar", (requisicao, resposta) => {
   try {
     // corpo da requisição com os dados que preciso
-    const { matricula, nome, email } = requisicao.body;
+    const { placa, modelo, marca, ano, cor, quilometragem, status } = requisicao.body;
 
     // salvando os dados que enviei ao servidor pela req
-    const dados = { matricula, nome, email };
+    const dados = { placa, modelo, marca, ano, cor, quilometragem, status };
 
     // Vericando se todos os campos foram preenchidos, caso não retorna erro 400
-    if (!matricula || !nome || !email) {
+    if ( !placa || !modelo || !marca || !ano || !cor || !quilometragem || !status) {
+        
       return resposta
         .status(400)
         .json({ mensagem: "Todos os campos são obrigatorios!" });
     }
 
     // Salvando os dados em array(memoria) via push
-    alunos.push(dados);
+    veiculos.push(dados);
 
     // resposta informando que o aluno foi cadastrado
     // codigo http para created
@@ -75,71 +76,70 @@ app.post("/cadastrar", (requisicao, resposta) => {
   } catch (error) {
     resposta
       .status(500)
-      .json({ mensagem: "Erro ao cadastrar usuario!", erro: error });
+      .json({ mensagem: "Erro ao cadastrar veículo!", erro: error });
   }
 });
 
-app.put("/editar/:matricula", (requisicao, resposta) => {
+app.put("/editar/:placa", (requisicao, resposta) => {
   try {
-    const matricula = requisicao.params.matricula
-    const aluno = alunos.find(aluno => aluno.matricula === matricula)
-    if(!aluno){
-      return resposta.status(400).json({mensagem: "Aluno não encontrado!"})
+    const placa = requisicao.params.placa
+    const veiculo = veiculos.find(veiculo => veiculo.placa === placa)
+    if(!veiculo){
+      return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
     }
     // enviando para o servidor novos dados para editar o aluno
-    const { novoNome, novoEmail } = requisicao.body
-    if(!novoNome || !novoEmail){
+    const { novaQuilometragem, novoStatus } = requisicao.body
+    if(!novaQuilometragem || !novoStatus){
       return resposta.status(400).json({mensagem: "Todos os campos para edição são obrigatorios!"})
     }
 
-    aluno.nome = novoNome
-    aluno.email = novoEmail
+    veiculo.quilometragem = novaQuilometragem
+    veiculo.status = novoStatus
 
-    resposta.status(200).json({mensagem: "Aluno atualizado com sucesso!"})
+    resposta.status(200).json({mensagem: "Veículo atualizado com sucesso!"})
   } catch (error) {
-    resposta.status(500).json({mensagem: "Erro ao editar o aluno!", erro: error})
+    resposta.status(500).json({mensagem: "Erro ao editar o veículo!", erro: error})
   }
 });
 
 app.patch("/editar/:matricula", (requisicao, resposta) =>  {
   try {
-    const matricula = requisicao.params.matricula
-    const aluno = alunos.find(aluno => aluno.matricula === matricula)
-    if(!aluno){
-      return resposta.status(400).json({mensagem: "Aluno não encontrado!"})
+    const placa = requisicao.params.placa
+    const veiculo = veiculos.find(veiculo => veiculo.placa === placa)
+    if(!veiculo){
+      return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
     }
-    const { novoNome, novoEmail } = requisicao.body
+    const { novaQuilometragem, novoStatus } = requisicao.body
     
-    aluno.nome = novoNome || aluno.nome
-    
-    aluno.email = novoEmail || aluno.email
+    veiculo.quilometragem = novaQuilometragem || veiculo.quilometragem
+    veiculo.status = novoStatus || veiculo.status
 
-    resposta.status(200).json({mensagem: "Aluno atualizado com sucesso!"})
+    resposta.status(200).json({mensagem: "Veículo atualizado com sucesso!"})
   } catch (error) {
-    resposta.status(500).json({mensagem: "Erro ao editar o aluno!", erro: error})
+    resposta.status(500).json({mensagem: "Erro ao editar o Veículo!", erro: error})
   }
 })
 
 app.delete("/excluir/todos", (requisicao, resposta) => {
   try {
-    alunos.length = 0
-    resposta.status(200).json({mensagem: "Todos os alunos foram excluidos!"})
+    veiculos.length = 0
+    resposta.status(200).json({mensagem: "Todos os veículos foram excluidos!"})
   } catch (error) {
-    resposta.status(500).json({mensagem: "Erro ao excluir os alunos!", erro: error})
+    resposta.status(500).json({mensagem: "Erro ao excluir os veículos!", erro: error})
   }
 } )
 
-app.delete("/excluir/:matricula", (requisicao, resposta) => {
+app.delete("/excluir/:placa", (requisicao, resposta) => {
   try {
-    const matricula = requisicao.params.matricula
-    const alunoIndex = alunos.findIndex(aluno => aluno.matricula === matricula)
-    if(alunoIndex === -1){
-      return resposta.status(400).json({mensagem: "Aluno não encontrado!"})
+    const placa = requisicao.params.placa
+    const veiculoIndex = veiculos.findIndex(veiculo => veiculo.placa === placa)
+    if(veiculoIndex === -1){
+      return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
     }
-    alunos.splice(alunoIndex,1)
-    resposta.status(200).json({mensagem: "Aluno excluido com sucesso!"})
+    veiculos.splice(veiculosIndex,1)
+    resposta.status(200).json({mensagem: "Veículos excluidos com sucesso!"})
   } catch (error) {
-    resposta.status(500).json({mensagem: "Erro ao excluir os alunos!", erro: error})
+    resposta.status(500).json({mensagem: "Erro ao excluir os veículos!", erro: error})
   }
 })
 
