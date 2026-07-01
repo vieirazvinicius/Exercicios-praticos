@@ -85,7 +85,7 @@ app.put("/editar/:placa", (requisicao, resposta) => {
     const placa = requisicao.params.placa
     const veiculo = veiculos.find(veiculo => veiculo.placa === placa)
     if(!veiculo){
-      return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
+      return resposta.status(404).json({mensagem: "Veículo não encontrado!"})
     }
     // enviando para o servidor novos dados para editar o veiculo
     const { novaQuilometragem, novoStatus } = requisicao.body
@@ -107,7 +107,7 @@ app.patch("/editar/:placa", (requisicao, resposta) =>  {
     const placa = requisicao.params.placa
     const veiculo = veiculos.find(veiculo => veiculo.placa === placa)
     if(!veiculo){
-      return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
+      return resposta.status(404).json({mensagem: "Veículo não encontrado!"})
     }
     const { novaQuilometragem, novoStatus } = requisicao.body
     
