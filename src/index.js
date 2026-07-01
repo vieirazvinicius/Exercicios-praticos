@@ -27,17 +27,17 @@ app.get("/listar", (requisicao, resposta) => {
   }
 });
 
-// Endpoint para listar aluno pelo matricula
+// Endpoint para listar veiculo pelo placa
 // http://localhost:3000/listar/a92222
 app.get("/listar/:placa", (requisicao, resposta) => {
   try {
     const placa = requisicao.params.placa;
-    // const alunos = [{},{},{}]
+    // const veiculo = [{},{},{}]
     const veiculo_procurado = veiculos.find(
       (veiculo) => veiculo.placa === placa,
     );
 
-    // e se o aluno que eu estou procurando não existir?
+    // e se o veiculo que eu estou procurando não existir?
     if (!veiculo_procurado) {
       return resposta.status(200).json({ mensagem: "Veículo não encontrado!" });
     }
@@ -50,7 +50,7 @@ app.get("/listar/:placa", (requisicao, resposta) => {
   }
 });
 
-// Endpoint para cadastrar um aluno
+// Endpoint para cadastrar um veiculo
 app.post("/cadastrar", (requisicao, resposta) => {
   try {
     // corpo da requisição com os dados que preciso
@@ -70,7 +70,7 @@ app.post("/cadastrar", (requisicao, resposta) => {
     // Salvando os dados em array(memoria) via push
     veiculos.push(dados);
 
-    // resposta informando que o aluno foi cadastrado
+    // resposta informando que o veiculo foi cadastrado
     // codigo http para created
     resposta.status(201).json({ mensagem: "Cadastro realizado com sucesso!" });
   } catch (error) {
@@ -87,7 +87,7 @@ app.put("/editar/:placa", (requisicao, resposta) => {
     if(!veiculo){
       return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
     }
-    // enviando para o servidor novos dados para editar o aluno
+    // enviando para o servidor novos dados para editar o veiculo
     const { novaQuilometragem, novoStatus } = requisicao.body
     if(!novaQuilometragem || !novoStatus){
       return resposta.status(400).json({mensagem: "Todos os campos para edição são obrigatorios!"})
