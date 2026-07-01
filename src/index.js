@@ -19,7 +19,7 @@ app.get("/", (requisicao, resposta) => {
   } catch (error) {
     resposta
       .status(500)
-      .json({ mensagem: "Erro ao listar os veículos", erro: error });
+      .json({ mensagem: "Erro", erro: error });
   }
 })
 
