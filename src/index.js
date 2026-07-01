@@ -15,11 +15,13 @@ const veiculos = [];
 // Verificar a saúde da API
 app.get("/", (requisicao, resposta) => {
   try {
-    resposta.status(200).json({mensagem: "API funcionando com sucesso!", status: "ok", date: new Date.now() })
+    resposta.status(200).json({mensagem: "API funcionando com sucesso!", 
+    status: "ok", 
+    date: Date().toLocaleString("pt-BR", { timeZone: "America/Recife"}) })
   } catch (error) {
     resposta
       .status(500)
-      .json({ mensagem: "Erro", erro: error });
+      .json({ mensagem: "Erro da API", erro: error });
   }
 })
 
