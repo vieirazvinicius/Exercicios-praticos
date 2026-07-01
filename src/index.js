@@ -102,7 +102,7 @@ app.put("/editar/:placa", (requisicao, resposta) => {
   }
 });
 
-app.patch("/editar/:matricula", (requisicao, resposta) =>  {
+app.patch("/editar/:placa", (requisicao, resposta) =>  {
   try {
     const placa = requisicao.params.placa
     const veiculo = veiculos.find(veiculo => veiculo.placa === placa)
@@ -136,8 +136,8 @@ app.delete("/excluir/:placa", (requisicao, resposta) => {
     if(veiculoIndex === -1){
       return resposta.status(400).json({mensagem: "Veículo não encontrado!"})
     }
-    veiculos.splice(veiculosIndex,1)
-    resposta.status(200).json({mensagem: "Veículos excluidos com sucesso!"})
+    veiculos.splice(veiculoIndex,1)
+    resposta.status(200).json({mensagem: "Veículo excluido com sucesso!"})
   } catch (error) {
     resposta.status(500).json({mensagem: "Erro ao excluir os veículos!", erro: error})
   }
