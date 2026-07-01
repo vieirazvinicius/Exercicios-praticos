@@ -12,6 +12,17 @@ const porta = process.env.PORTA;
 
 const veiculos = [];
 
+// Verificar a saúde da API
+app.get("/", (requisicao, resposta) => {
+  try {
+    resposta.status(200).json({mensagem: "API funcionando com sucesso!", status: "ok", date: new Date.now() })
+  } catch (error) {
+    resposta
+      .status(500)
+      .json({ mensagem: "Erro ao listar os veículos", erro: error });
+  }
+})
+
 app.get("/listar", (requisicao, resposta) => {
   try {
     if (veiculos.length === 0) {
