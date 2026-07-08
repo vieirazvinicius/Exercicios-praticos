@@ -1,4 +1,4 @@
-import VeiculoModelModel from "../models/veiculo.model";    
+import VeiculoModelModel from "../models/veiculo.model.js";    
 
 class VeiculoController{
     static cadastrar(requisicao, resposta) {
@@ -39,7 +39,7 @@ class VeiculoController{
              resposta.status(500).json({ mensagem: "Erro ao listar o veículo"})
         }
     }
-static editarTotal(requisicao, resposta){
+    static editarTotal(requisicao, resposta){
     try {
         const placa = requisicao.params.placa
         const { novaQuilometragem, novoStatus } = requisicao.body
@@ -49,8 +49,8 @@ static editarTotal(requisicao, resposta){
     } catch (error) {
         resposta.status(500).json({mensagem: "Erro ao editar o veículo!"})
     }
-}
-static editarParcial(requisicao, resposta){
+    }
+    static editarParcial(requisicao, resposta){
     try {
         const placa = requisicao.params.placa
         const { novaQuilometragem, novoStatus } = requisicao.body
@@ -59,7 +59,24 @@ static editarParcial(requisicao, resposta){
     } catch (error) {
         resposta.status(500).json({mensagem: "Erro ao editar o veículo!"})
     }
-}
-static excluir
+    }
+    static excluirTodos(requisicao, resposta){
+        try {
+            VeiculoModel.excluirTodos()
+            resposta.status(200).json({mensagem: "Todos os veículos foram excluídos!"})
+        } catch (error) {
+            resposta.status(500).json({ mensagem: "Erro ao excluir todos os veículos!"})
+        }
+    }
+    static excluirPorPlaca(requisicao, resposta){
+        try {
+            const matricula = requisicao.params.placa
+            VeiculoModel.excluirPorPlaca()
+            resposta.status(200).json({mensagem: " veículo excluido com sucesso!"})
+        } catch (error) {
+            resposta.status(500).json({mensagem: "Erro ao excluir veículo!"})
+        }
+    }
 
 }
+export default VeiculoController

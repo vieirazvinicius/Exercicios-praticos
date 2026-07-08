@@ -59,4 +59,4 @@ class VeiculoModel{
     }
 }
 
-export default VeiculoModelModel
+export default VeiculoModel
