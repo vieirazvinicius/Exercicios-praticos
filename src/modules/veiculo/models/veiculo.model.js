@@ -1,5 +1,5 @@
-import veiculo from "../../../config/database.js"
-import alunos from "../../../config/database.js"
+import veiculos from "../../../config/database.js"
+
 
 class VeiculoModel{
     static cadastrar(placa, modelo, marca, ano, cor, quilometragem, status){
@@ -20,7 +20,7 @@ class VeiculoModel{
     static editarTotal(placa, novaQuilometragem, novoStatus){
        const veiculo = VeiculoModel.listarPorPlaca(placa)
 
-       if(!placa){
+       if(!veiculo){
             return null
        }
 
@@ -33,7 +33,7 @@ class VeiculoModel{
     static editarParcial(placa, novaQuilometragem, novoStatus){
         const veiculo = VeiculoModel.listarPorPlaca(placa)
 
-        if(!placa){
+        if(!veiculo){
             return null
         }
 
@@ -43,7 +43,7 @@ class VeiculoModel{
         return veiculo
     }
 
-    static excluir(placa){
+    static excluirPorPlaca(placa){
         const index = veiculos.findIndex(veiculo => veiculo.placa === placa)
 
         if(index === -1){

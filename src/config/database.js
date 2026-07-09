@@ -1,3 +1,3 @@
-const veiculo = []
+const veiculos = []
 
-export default veiculo
+export default veiculos

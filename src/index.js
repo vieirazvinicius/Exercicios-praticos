@@ -25,7 +25,7 @@ app.get("/", (requisicao, resposta) => {
   } catch (error) {
     resposta
       .status(500)
-      .json({ mensagem: "Erro da API", erro: error });
+      .json({ mensagem: "Erro da API", erro: error.message });
   }
 })
 

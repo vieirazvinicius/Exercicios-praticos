@@ -6,9 +6,9 @@ const router = express.Router();
 router.get("/listar", VeiculoController.listarTodos)
 router.get("/listar/:placa", VeiculoController.listarPorPlaca)
 router.post("/cadastrar", VeiculoController.cadastrar)
-router.put("/editar/total/:veiculo", VeiculoController.editarTotal)
-router.patch("/editar/parcial/:veiculo", VeiculoController.editarParcial)
-router.delete("/excluir/:veiculo", VeiculoController.excluirPorPlaca)
-router.delete("/excluir/todos", VeiculoController.excluirTodos)
+router.put("/editar/total/:placa", VeiculoController.editarTotal)
+router.patch("/editar/parcial/:placa", VeiculoController.editarParcial)
+router.delete("/excluir/:placa", VeiculoController.excluirPorPlaca)
+router.delete("/excluir", VeiculoController.excluirTodos)
 
 export default router
