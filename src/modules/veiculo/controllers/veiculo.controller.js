@@ -2,7 +2,7 @@ import VeiculoModel from "../models/veiculo.model.js";
 import VeiculoModelModel from "../models/veiculo.model.js";
 
 class VeiculoController {
-  static cadastrar(requisicao, resposta) {
+  static async cadastrar(requisicao, resposta) {
     try {
       const { placa, modelo, marca, ano, cor, quilometragem, status } =
         requisicao.body;
@@ -19,7 +19,7 @@ class VeiculoController {
           .status(400)
           .json({ mensagem: "Todos os campos são obrigatorios!" });
       }
-      VeiculoModel.cadastrar(
+      await VeiculoModel.cadastrar(
         placa,
         modelo,
         marca,
@@ -37,9 +37,9 @@ class VeiculoController {
         .json({ mensagem: "Erro ao cadastrar veículo!", erro: error.message });
     }
   }
-  static listarTodos(requisicao, resposta) {
+  static async listarTodos(requisicao, resposta) {
     try {
-      const veiculos = VeiculoModel.listarTodos();
+      const veiculos = await VeiculoModel.listarTodos();
       if (veiculos.length === 0) {
         return resposta
           .status(200)
@@ -52,10 +52,10 @@ class VeiculoController {
         .json({ mensagem: "Erro ao listar veículos!", erro: error.message });
     }
   }
-  static listarPorPlaca(requisicao, resposta) {
+  static async listarPorPlaca(requisicao, resposta) {
     try {
       const placa = requisicao.params.placa;
-      const veiculo = VeiculoModel.listarPorPlaca(placa);
+      const veiculo = await VeiculoModel.listarPorPlaca(placa);
       if (!veiculo) {
         return resposta
           .status(200)
@@ -68,11 +68,11 @@ class VeiculoController {
         .json({ mensagem: "Erro ao listar o veículo", erro: error.message });
     }
   }
-  static editarTotal(requisicao, resposta) {
+  static async editarTotal(requisicao, resposta) {
     try {
       const placa = requisicao.params.placa;
       const { novaQuilometragem, novoStatus } = requisicao.body;
-      const veiculo = VeiculoModel.editarTotal(
+      const veiculo = await VeiculoModel.editarTotal(
         placa,
         novaQuilometragem,
         novoStatus,
@@ -84,11 +84,11 @@ class VeiculoController {
         .json({ mensagem: "Erro ao editar o veículo!", erro: error.message });
     }
   }
-  static editarParcial(requisicao, resposta) {
+  static async editarParcial(requisicao, resposta) {
     try {
       const placa = requisicao.params.placa;
       const { novaQuilometragem, novoStatus } = requisicao.body;
-      const veiculo = VeiculoModel.editarParcial(
+      const veiculo = await VeiculoModel.editarParcial(
         placa,
         novaQuilometragem,
         novoStatus,
@@ -103,9 +103,9 @@ class VeiculoController {
         .json({ mensagem: "Erro ao editar o veículo!", erro: error.message });
     }
   }
-  static excluirTodos(requisicao, resposta) {
+  static async excluirTodos(requisicao, resposta) {
     try {
-      VeiculoModel.excluirTodos();
+      await VeiculoModel.excluirTodos();
       resposta
         .status(200)
         .json({ mensagem: "Todos os veículos foram excluídos!" });
@@ -118,10 +118,10 @@ class VeiculoController {
         });
     }
   }
-  static excluirPorPlaca(requisicao, resposta) {
+  static async excluirPorPlaca(requisicao, resposta) {
     try {
       const placa = requisicao.params.placa;
-      VeiculoModel.excluirPorPlaca(placa);
+      await VeiculoModel.excluirPorPlaca(placa);
       resposta.status(200).json({ mensagem: "veículo excluido com sucesso!" });
     } catch (error) {
       resposta
